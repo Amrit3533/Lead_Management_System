@@ -2,10 +2,7 @@ import { useState } from "react";
 import api from "../api";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
-<<<<<<< HEAD
 import AuthLayout from "../Components/AuthLayout";
-=======
->>>>>>> ea674ddd48d3492af205ba5a91a79b7f88fe8628
 
 export default function Register() {
   const [username, setUsername] = useState("");
