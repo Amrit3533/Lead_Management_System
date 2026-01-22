@@ -21,7 +21,7 @@ export default function LeadsList() {
   const fetchLeads = async () => {
     try {
       const res = await api.get(
-        `/leads?page=${page}&limit=${limit}&city=${city}&status=${status}`
+        `/leads?page=${page}&limit=${limit}&city=${city}&status=${status}`,
       );
       setRowData(res.data.data);
       setTotalPages(res.data.totalPages);
@@ -87,52 +87,61 @@ export default function LeadsList() {
 
   return (
     <div className="p-1 sm:p-3 max-w-full">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
-        <h2 className="text-xl sm:text-2xl font-bold text-center flex-1">
-          📋 Lead Management System
-        </h2>
-        <button
-          onClick={handleLogout}
-          className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition w-full sm:w-auto"
-        >
-          🚪 Logout
-        </button>
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+        <h1 className="text-2xl font-bold">Lead Management System</h1>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => navigate("/leads/new")}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          >
+            + Add Lead
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg"
+          >
+            Logout
+          </button>
+        </div>
       </div>
       {/* Top actions */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
-        <button
-          onClick={() => navigate("/leads/new")}
-          className="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition w-full sm:w-auto"
-        >
-          ➕ Add Lead
-        </button>
-
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-          <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="Filter by City"
-            className="border rounded px-2 py-1 w-full sm:w-auto text-sm"
-          />
+        <div className="bg-white p-4 rounded-xl shadow mb-4 flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="Filter by City"
+              className="border rounded px-2 py-1 w-full sm:w-auto text-sm"
+            />
 
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="border rounded px-2 py-1 w-full sm:w-auto text-sm"
-          >
-            <option value="">All Status</option>
-            <option value="new">New</option>
-            <option value="contacted">Contacted</option>
-            <option value="qualified">Qualified</option>
-            <option value="lost">Lost</option>
-            <option value="won">Won</option>
-          </select>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="border rounded px-2 py-1 w-full sm:w-auto text-sm"
+            >
+              <option value="">All Status</option>
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="qualified">Qualified</option>
+              <option value="lost">Lost</option>
+              <option value="won">Won</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {/* AG Grid */}
+      {rowData.length === 0 && (
+        <div className="text-center text-gray-500 py-10">
+          No leads found. Try changing filters.
+        </div>
+      )}
+
       <div
         className="ag-theme-alpine w-full overflow-x-auto"
         style={{ height: 472 }}
