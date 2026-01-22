@@ -22,8 +22,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// backend/routes/authRoutes.js
-
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -36,7 +34,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user._id },process.env.JWT_SECRET, { expiresIn: "1d" });
     const { password: _, ...userData } = user.toObject(); 
 
-    res.cookie("token", token, { httpOnly: true, sameSite: "strict" })
+    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "None" })
        .json({ message: "Logged in", user: userData }); 
   } catch (err) {
     res.status(400).json({ error: err.message });
